@@ -1,0 +1,39 @@
+{
+  "ticker": "HYUNDAI.NS",
+  "trained_until": "2026-02-09",
+  "features": [
+    "Close",
+    "RSI",
+    "MA50"
+  ],
+  "window": 30,
+  "mode": "XGB_ONLY",
+  "X_mean": [
+    NaN,
+    NaN,
+    NaN
+  ],
+  "X_std": [
+    NaN,
+    NaN,
+    NaN
+  ],
+  "y_mean": [
+    NaN,
+    NaN,
+    NaN,
+    NaN
+  ],
+  "y_std": [
+    NaN,
+    NaN,
+    NaN,
+    NaN
+  ],
+  "horizons": [
+    7,
+    30,
+    90,
+    365
+  ]
+}

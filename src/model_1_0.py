@@ -1,10 +1,11 @@
 # ================================
-# LEGEND HYBRID MODEL (V3.2)
-# PRODUCTION SAFE | IPO SAFE
+# LEGEND HYBRID MODEL (V3.3)
+# ROLLING 5Y + INCREMENTAL RETRAIN
 # ================================
 
 import os
 import json
+import datetime
 import torch
 import torch.nn as nn
 import xgboost as xgb
@@ -20,17 +21,28 @@ from safetensors.torch import save_file
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 WINDOW = 30
-EPOCHS = 2000
+EPOCHS = 1500
 LR = 5e-4
-PATIENCE = 150
+
+MIN_NEW_DAYS = 14
+MIN_FULL_TRAIN_ROWS = 500
+MIN_XGB_ONLY_ROWS = 250
 
 # ================================
-# DATA REQUIREMENTS (IPO SAFE)
+# UTILS
 # ================================
 
-MIN_FULL_TRAIN_ROWS = 500     # LSTM + XGB
-MIN_XGB_ONLY_ROWS = 250       # XGB only
-MIN_WINDOW_ROWS = WINDOW + 20
+
+def today():
+    return datetime.date.today()
+
+
+def five_years_ago():
+    return today() - datetime.timedelta(days=365 * 5)
+
+
+def yesterday():
+    return today() - datetime.timedelta(days=1)
 
 # ================================
 # FEATURE ENGINEERING
@@ -59,7 +71,7 @@ def make_sequences(X, y, window):
     return np.array(Xs), np.array(ys)
 
 
-def check_data_eligibility(df):
+def check_mode(df):
     rows = len(df)
     if rows >= MIN_FULL_TRAIN_ROWS:
         return "FULL"
@@ -73,50 +85,59 @@ def check_data_eligibility(df):
 
 
 class LegendLSTM(nn.Module):
-    def __init__(self, input_size, hidden=64, output=4):
+    def __init__(self, input_size):
         super().__init__()
-        self.lstm = nn.LSTM(
-            input_size,
-            hidden,
-            num_layers=1,
-            batch_first=True,
-            dropout=0.1
-        )
-        self.fc = nn.Linear(hidden, output)
+        self.lstm = nn.LSTM(input_size, 64, batch_first=True)
+        self.fc = nn.Linear(64, 4)
 
     def forward(self, x):
         out, _ = self.lstm(x)
         return self.fc(out[:, -1])
 
 # ================================
-# MAIN TRAIN FUNCTION
+# MAIN TRAIN / UPDATE FUNCTION
 # ================================
 
 
-def train_legendary_hybrid(ticker: str, output_dir: str):
-    print(f"\n🧬 Training {ticker}")
+def train_legendary_hybrid(
+    ticker: str,
+    output_dir: str,
+    mode: str = "fresh"   # fresh | update
+):
     os.makedirs(output_dir, exist_ok=True)
 
-    artifacts = {
-        "ticker": ticker,
-        "status": "FAILED",
-        "mode": None,
-        "lstm_path": None,
-        "xgb_paths": {},
-        "meta_path": None
-    }
+    meta_path = f"{output_dir}/meta.json"
 
-    # -------- LOAD DATA --------
+    # -------- DATE LOGIC --------
+    start_date = five_years_ago()
+    end_date = yesterday()
+
+    if mode == "update" and os.path.exists(meta_path):
+        with open(meta_path) as f:
+            old_meta = json.load(f)
+
+        trained_until = datetime.date.fromisoformat(old_meta["trained_until"])
+        delta_days = (end_date - trained_until).days
+
+        if delta_days < MIN_NEW_DAYS:
+            print(f"⏩ {ticker}: Only {delta_days} new days — skipping update")
+            return {"ticker": ticker, "status": "SKIPPED"}
+
+        start_date = trained_until + datetime.timedelta(days=1)
+
+    print(f"🧬 {ticker} | {mode.upper()} | {start_date} → {end_date}")
+
+    # -------- DOWNLOAD DATA --------
     df = yf.download(
         ticker,
-        start="2019-01-01",
-        end="2025-06-01",
+        start=start_date.isoformat(),
+        end=end_date.isoformat(),
         progress=False
     )
 
     if df.empty:
         print("❌ No data")
-        return artifacts
+        return {"ticker": ticker, "status": "FAILED"}
 
     if isinstance(df.columns, pd.MultiIndex):
         df.columns = df.columns.get_level_values(0)
@@ -126,12 +147,10 @@ def train_legendary_hybrid(ticker: str, output_dir: str):
     df["MA50"] = df["Close"].rolling(50).mean()
     df.dropna(inplace=True)
 
-    mode = check_data_eligibility(df)
-    artifacts["mode"] = mode
-
-    if mode == "SKIP":
-        print("⚠️ Not enough data — skipping")
-        return artifacts
+    mode_flag = check_mode(df)
+    if mode_flag == "SKIP":
+        print("⚠️ Not enough data")
+        return {"ticker": ticker, "status": "SKIPPED"}
 
     # -------- TARGETS --------
     horizons = [7, 30, 90, 365]
@@ -144,72 +163,56 @@ def train_legendary_hybrid(ticker: str, output_dir: str):
     X = df[features].values
     y = df[[f"R_{h}" for h in horizons]].values
 
-    # -------- SCALE --------
     X, X_mean, X_std = standardize(X)
-    y_mean = y.mean(axis=0)
-    y_std = y.std(axis=0) + 1e-8
+    y_mean, y_std = y.mean(0), y.std(0) + 1e-8
     y_scaled = (y - y_mean) / y_std
 
-    # -------- XGB (ALWAYS) --------
+    # -------- XGB --------
     for i, h in enumerate(horizons):
         model = xgb.XGBRegressor(
             n_estimators=400,
             max_depth=4,
             learning_rate=0.03,
-            subsample=0.8,
-            colsample_bytree=0.8,
             tree_method="hist",
             device="cuda"
         )
         model.fit(X[:-365], y_scaled[:-365, i])
+        model.save_model(f"{output_dir}/xgb_{h}.json")
 
-        path = f"{output_dir}/xgb_{h}.json"
-        model.save_model(path)
-        artifacts["xgb_paths"][h] = path
-
-    # -------- LSTM (FULL MODE ONLY) --------
-    if mode == "FULL":
+    # -------- LSTM --------
+    if mode_flag == "FULL":
         X_seq, y_seq = make_sequences(X, y_scaled, WINDOW)
+        X_t = torch.tensor(X_seq, dtype=torch.float32).to(DEVICE)
+        y_t = torch.tensor(y_seq, dtype=torch.float32).to(DEVICE)
 
-        split = int(0.8 * len(X_seq))
-        X_train = torch.tensor(X_seq[:split], dtype=torch.float32).to(DEVICE)
-        y_train = torch.tensor(y_seq[:split], dtype=torch.float32).to(DEVICE)
-
-        model = LegendLSTM(len(features)).to(DEVICE)
-        optimizer = torch.optim.AdamW(model.parameters(), lr=LR)
+        lstm = LegendLSTM(len(features)).to(DEVICE)
+        opt = torch.optim.AdamW(lstm.parameters(), lr=LR)
         loss_fn = nn.HuberLoss()
 
-        model.train()
         for _ in range(EPOCHS):
-            optimizer.zero_grad()
-            loss = loss_fn(model(X_train), y_train)
+            opt.zero_grad()
+            loss = loss_fn(lstm(X_t), y_t)
             loss.backward()
-            optimizer.step()
+            opt.step()
 
-        lstm_path = f"{output_dir}/lstm.safetensors"
-        save_file(model.state_dict(), lstm_path)
-        artifacts["lstm_path"] = lstm_path
+        save_file(lstm.state_dict(), f"{output_dir}/lstm.safetensors")
 
     # -------- META --------
     meta = {
         "ticker": ticker,
-        "mode": mode,
+        "trained_until": str(end_date),
         "features": features,
         "window": WINDOW,
+        "mode": mode_flag,
         "X_mean": X_mean.tolist(),
         "X_std": X_std.tolist(),
         "y_mean": y_mean.tolist(),
         "y_std": y_std.tolist(),
-        "horizons": horizons,
-        "trained_until": str(df.index[-1].date())
+        "horizons": horizons
     }
 
-    meta_path = f"{output_dir}/meta.json"
     with open(meta_path, "w") as f:
         json.dump(meta, f, indent=2)
 
-    artifacts["meta_path"] = meta_path
-    artifacts["status"] = "SUCCESS"
-
-    print(f"✅ {ticker} TRAINED ({mode})")
-    return artifacts
+    print(f"✅ {ticker} DONE")
+    return {"ticker": ticker, "status": "SUCCESS"}
