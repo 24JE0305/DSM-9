@@ -1,5 +1,5 @@
 # ================================
-# TRAIN ALL TOP-50 MODELS
+# TRAIN / UPDATE ALL TOP-50
 # ================================
 
 from pathlib import Path
@@ -11,9 +11,9 @@ MODEL_STORAGE = BASE_DIR / "model_storage"
 MODEL_STORAGE.mkdir(exist_ok=True)
 
 
-def train_all_top50(skip_existing=True):
+def train_all_top50(mode="fresh"):
     tickers = load_top50()
-    print(f"\n🚀 Training started for {len(tickers)} companies\n")
+    print(f"\n🚀 MODE: {mode.upper()} | {len(tickers)} COMPANIES\n")
 
     for i, ticker in enumerate(tickers, 1):
         print("=" * 60)
@@ -21,23 +21,20 @@ def train_all_top50(skip_existing=True):
 
         out_dir = MODEL_STORAGE / ticker
 
-        if skip_existing and (out_dir / "meta.json").exists():
-            print("⏩ Model already exists — skipping")
-            continue
-
         try:
             train_legendary_hybrid(
                 ticker=ticker,
-                output_dir=str(out_dir)
+                output_dir=str(out_dir),
+                mode=mode
             )
-            print(f"✅ Saved → {out_dir}")
-
         except Exception as e:
-            print(f"❌ Failed for {ticker}")
+            print(f"❌ FAILED: {ticker}")
             print(e)
 
-    print("\n🎉 ALL TRAINING DONE")
+    print("\n🎉 ALL DONE")
 
 
 if __name__ == "__main__":
-    train_all_top50()
+    # fresh → first time
+    # update → retrain if ≥ 14 days new data
+    train_all_top50(mode="update")
