@@ -45,7 +45,7 @@ def predict_ticker(ticker: str):
         meta = json.load(f)
 
     # -------- Load recent data --------
-    df = yf.download(ticker, period="6mo", progress=False)
+    df = yf.download(ticker, period="1w", progress=False)
 
     if df.empty:
         raise RuntimeError("No recent market data")
