@@ -123,7 +123,8 @@ def train_legendary_hybrid(
             print(f"⏩ {ticker}: Only {delta_days} new days — skipping update")
             return {"ticker": ticker, "status": "SKIPPED"}
 
-        start_date = trained_until + datetime.timedelta(days=1)
+        # Rolling 5Y retrain
+        start_date = five_years_ago()
 
     print(f"🧬 {ticker} | {mode.upper()} | {start_date} → {end_date}")
 

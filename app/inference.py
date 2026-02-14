@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import yfinance as yf
 import xgboost as xgb
-
+import os
 from safetensors.torch import load_file
 from pathlib import Path
 from app.config import MODEL_DIR
@@ -45,7 +45,10 @@ def predict_ticker(ticker: str):
         meta = json.load(f)
 
     # -------- Load recent data --------
-    df = yf.download(ticker, period="1w", progress=False)
+    file_path = f"data_cache/{ticker}.csv"
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"{file_path} does not exist!")
+    df = pd.read_csv(file_path, index_col=0, parse_dates=True)
 
     if df.empty:
         raise RuntimeError("No recent market data")
