@@ -7,3 +7,5 @@ scikit-learn
 matplotlib
 plotly
 python-dotenv
+streamlit
+requests
