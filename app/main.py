@@ -7,7 +7,11 @@ import pandas as pd
 import os
 from app.config import TOP50_FILE
 
-app = FastAPI(title="DSM-9 Market Prediction API")
+# --- Model 2 Imports ---
+from app.model_2.inference_v2 import predict_v2
+
+
+app = FastAPI(title="DSM-9 Market Prediction API (Combined)")
 
 # Allow CORS for React frontend
 app.add_middleware(
@@ -48,9 +52,26 @@ def get_history(ticker: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# ==========================================
+#          MODEL 1.0 ENDPOINTS
+# ==========================================
+
 @app.post("/predict", response_model=PredictionResponse)
 def predict(req: PredictionRequest):
     try:
         return predict_ticker(req.ticker)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+# ==========================================
+#          MODEL 2.0 ENDPOINTS
+# ==========================================
+
+@app.get("/predict_v2/{ticker}")
+def predict_model_2(ticker: str):
+    try:
+        result = predict_v2(ticker)
+        return result
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
