@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from src.production_predictor_2_0 import ProductionPredictor2_0
+from model_2.production_predictor_2_0 import ProductionPredictor2_0
 import numpy as np
 
 router = APIRouter()

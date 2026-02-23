@@ -1,8 +1,5 @@
-import os
-import pandas as pd
+from model_2.trainer_v2_0 import train_v2
 
-file_path = f"DSM-9/data_cache/ITC.NS.csv"
-if not os.path.exists(file_path):
-    raise FileNotFoundError(f"{file_path} does not exist!")
-df = pd.read_csv(file_path, index_col=0, parse_dates=True)
-print(df.head())
+if __name__ == "__main__":
+    result = train_v2("RELIANCE.NS")
+    print(result)
