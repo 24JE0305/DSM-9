@@ -16,7 +16,7 @@ from src.model_2.model_v2_0 import (
 )
 
 MODEL_BASE_PATH = "model_storage/model_2"
-DATA_CACHE = "data_cache_model_2"
+DATA_CACHE = "data_cache"
 
 FEATURES = [
     "Close",
