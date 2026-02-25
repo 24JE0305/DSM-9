@@ -41,7 +41,7 @@ def compute_rsi(series, period=14):
 
 def compute_features(ticker):
 
-    cache_dir = Path("data_cache_model_2")
+    cache_dir = Path("data_cache")
 
     ticker_path = cache_dir / f"{ticker}.csv"
     nifty_path = cache_dir / "^NSEI.csv"
