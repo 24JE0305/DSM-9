@@ -88,3 +88,10 @@ def generate_report_v2(ticker: str):
         return report
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+    
+'''
+Component	Famous Equation	Purpose
+Growth Rating	Sharpe Ratio	Risk-adjusted growth
+Financial Health	Piotroski F-Score	Fundamental strength
+Safety Rating	Altman Z-Score	Bankruptcy risk
+'''
