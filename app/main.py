@@ -6,6 +6,7 @@ import json
 import pandas as pd
 import os
 from app.config import TOP50_FILE
+from app.services.report_service import build_report
 
 # --- Model 2 Imports ---
 from app.model_2.inference_v2 import predict_v2
@@ -73,5 +74,17 @@ def predict_model_2(ticker: str):
     try:
         result = predict_v2(ticker)
         return result
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+# ==========================================
+#          REPORT GENERATION ENDPOINTS
+# ==========================================
+@app.get("/generate_report_v2/{ticker}")
+def generate_report_v2(ticker: str):
+    try:
+        prediction_data = predict_v2(ticker)
+        report = build_report(ticker, prediction_data)
+        return report
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
