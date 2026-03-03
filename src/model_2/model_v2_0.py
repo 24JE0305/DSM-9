@@ -55,9 +55,6 @@ def compute_features(ticker):
     df = pd.read_csv(ticker_path, index_col=0, parse_dates=True)
     nifty = pd.read_csv(nifty_path, index_col=0, parse_dates=True)
 
-    print("Loaded ticker shape:", df.shape)
-    print("Loaded nifty shape:", nifty.shape)
-
     required_cols = ["Close", "Volume"]
     for col in required_cols:
         if col not in df.columns:

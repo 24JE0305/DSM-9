@@ -123,12 +123,12 @@ def predict_v2(ticker: str):
 
     if len(df) < WINDOW:
         raise ValueError(f"Not enough data. Required: {WINDOW}, Got: {len(df)}")
-    print("done126")
+
     # Check required columns
     missing_cols = [col for col in FEATURES if col not in df.columns]
     if missing_cols:
         raise ValueError(f"Missing required feature columns: {missing_cols}")
-    print("done131")
+
     last_close = float(df["Close"].iloc[-1])
     volatility = float(df["Volatility"].iloc[-1])
 
@@ -147,16 +147,16 @@ def predict_v2(ticker: str):
     xgb_preds = []
 
     for model in xgb_models:
-        print("done150")
+
         last_row = X_scaled[-1:].copy()   # Always 2D
         preds = model.predict(last_row)
 
         preds = np.atleast_1d(preds)      # Force array
-        print("done155")
+        
         xgb_preds.append(float(preds[0]))
 
     xgb_preds = np.array(xgb_preds)
-    print("done159")
+
     # ---------- LSTM ----------
     X_seq = X_scaled[-WINDOW:]
     X_seq = torch.tensor(
@@ -171,7 +171,7 @@ def predict_v2(ticker: str):
         lstm_preds = lstm_out
     else:
         lstm_preds = lstm_out[0]
-    print("done174")
+
     # ---------- Fusion Safety ----------
     w_xgb = np.array(metadata.get("fusion_weights_xgb", [0.5]*len(HORIZONS)))
     w_lstm = np.array(metadata.get("fusion_weights_lstm", [0.5]*len(HORIZONS)))
@@ -199,20 +199,18 @@ def predict_v2(ticker: str):
     agreement = max(0.0, min(1.0, agreement))  # clamp
 
     predictions = {}
-    print("done192")
+    
     for i, h in enumerate(HORIZONS):
-        print("done194")
+        
         expected_return = float(fused[i])
         return_pct = round(expected_return * 100, 2)
-        print("done197")
+       
         conf_score = float(metadata.get("confidence_score", 0.6))
         conf_level = confidence_label(conf_score)
-        print("done200")
-        print("fused_rmse:", fused_rmse)
-        print("shape:", np.shape(fused_rmse))
+
         low = expected_return - fused_rmse[i]
         high = expected_return + fused_rmse[i]
-        print("done203")
+    
         predictions[f"{h}_days"] = {
             "expected_return": round(expected_return, 4),
             "return_percentage": return_pct,
@@ -225,7 +223,7 @@ def predict_v2(ticker: str):
             },
             "signal_bias": signal_bias(expected_return)
         }
-    print("done216")
+    
     return {
         "symbol": ticker,
         "generated_at": datetime.utcnow().isoformat() + "Z",
