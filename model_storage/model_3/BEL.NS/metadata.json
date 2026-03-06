@@ -1,0 +1,41 @@
+{
+  "version": "3.0",
+  "ticker": "BEL.NS",
+  "last_retrained": "2026-03-06T19:24:34.291634",
+  "val_rmse": 0.2248414098589627,
+  "horizons": [
+    90,
+    365
+  ],
+  "features": [
+    "Close",
+    "Return",
+    "Log_Return",
+    "MA10",
+    "MA50",
+    "MA200",
+    "EMA20",
+    "Price_vs_MA50",
+    "Price_vs_MA200",
+    "RSI",
+    "MACD",
+    "MACD_Signal",
+    "MACD_Hist",
+    "BB_Upper",
+    "BB_Lower",
+    "BB_Width",
+    "ATR",
+    "OBV",
+    "Volume_Change",
+    "Volume_MA20",
+    "NIFTY_Return",
+    "NIFTY_MA10",
+    "FII_Net",
+    "DII_Net"
+  ],
+  "n_features": 24,
+  "window": 60,
+  "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
+  "confidence_score": 0.3,
+  "training_rows": 672
+}
