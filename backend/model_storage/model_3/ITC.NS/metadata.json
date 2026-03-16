@@ -1,8 +1,12 @@
 {
   "version": "3.0",
   "ticker": "ITC.NS",
-  "last_retrained": "2026-03-06T19:23:55.298945",
-  "val_rmse": 0.08453657217948767,
+  "last_retrained": "2026-03-08T17:50:44.348677",
+  "val_rmse": 0.07983543259218921,
+  "val_rmse_per_horizon": [
+    0.10698193119458044,
+    0.036086825743504136
+  ],
   "horizons": [
     90,
     365
@@ -36,6 +40,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.3,
+  "confidence_score": 0.35,
   "training_rows": 672
 }

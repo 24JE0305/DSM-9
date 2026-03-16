@@ -1,8 +1,12 @@
 {
   "version": "3.0",
   "ticker": "BAJAJ-AUTO.NS",
-  "last_retrained": "2026-03-06T19:25:11.835390",
-  "val_rmse": 0.10945184361706758,
+  "last_retrained": "2026-03-08T17:51:52.913882",
+  "val_rmse": 0.10320098975887547,
+  "val_rmse_per_horizon": [
+    0.11816362364517159,
+    0.08566356647645065
+  ],
   "horizons": [
     90,
     365
@@ -36,6 +40,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.3,
+  "confidence_score": 0.21,
   "training_rows": 672
 }

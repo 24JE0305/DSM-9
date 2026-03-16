@@ -1,8 +1,12 @@
 {
   "version": "3.0",
   "ticker": "POWERGRID.NS",
-  "last_retrained": "2026-03-06T19:25:16.738747",
-  "val_rmse": 0.07553506549030152,
+  "last_retrained": "2026-03-08T17:51:57.280485",
+  "val_rmse": 0.07516672218785474,
+  "val_rmse_per_horizon": [
+    0.09176497187984722,
+    0.05365875683262813
+  ],
   "horizons": [
     90,
     365
@@ -36,6 +40,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.3,
+  "confidence_score": 0.29,
   "training_rows": 672
 }

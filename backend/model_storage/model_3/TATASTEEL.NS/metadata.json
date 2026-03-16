@@ -1,8 +1,12 @@
 {
   "version": "3.0",
   "ticker": "TATASTEEL.NS",
-  "last_retrained": "2026-03-06T19:25:44.261491",
-  "val_rmse": 0.08028304906223378,
+  "last_retrained": "2026-03-08T17:52:37.491972",
+  "val_rmse": 0.08024172249926306,
+  "val_rmse_per_horizon": [
+    0.10081259220022698,
+    0.05209884176417181
+  ],
   "horizons": [
     90,
     365
@@ -36,6 +40,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.3,
+  "confidence_score": 0.42,
   "training_rows": 672
 }

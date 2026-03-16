@@ -1,8 +1,12 @@
 {
   "version": "3.0",
   "ticker": "ADANIPORTS.NS",
-  "last_retrained": "2026-03-06T19:24:10.753723",
-  "val_rmse": 0.050941718978788,
+  "last_retrained": "2026-03-08T17:50:59.081995",
+  "val_rmse": 0.053245505144704615,
+  "val_rmse_per_horizon": [
+    0.0639774275326943,
+    0.03971216945129515
+  ],
   "horizons": [
     90,
     365
@@ -36,6 +40,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.49,
+  "confidence_score": 0.41,
   "training_rows": 672
 }

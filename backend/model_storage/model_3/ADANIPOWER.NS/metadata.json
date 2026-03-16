@@ -1,8 +1,12 @@
 {
   "version": "3.0",
   "ticker": "ADANIPOWER.NS",
-  "last_retrained": "2026-03-06T19:24:45.167787",
-  "val_rmse": 0.15874769103547834,
+  "last_retrained": "2026-03-08T17:51:30.122698",
+  "val_rmse": 0.16549704565930748,
+  "val_rmse_per_horizon": [
+    0.20725438008167027,
+    0.10873898188267338
+  ],
   "horizons": [
     90,
     365
@@ -36,6 +40,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.3,
+  "confidence_score": 0.12,
   "training_rows": 672
 }

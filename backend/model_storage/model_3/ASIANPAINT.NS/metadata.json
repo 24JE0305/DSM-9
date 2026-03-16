@@ -1,8 +1,12 @@
 {
   "version": "3.0",
   "ticker": "ASIANPAINT.NS",
-  "last_retrained": "2026-03-06T19:26:14.784301",
-  "val_rmse": 0.11185098342263916,
+  "last_retrained": "2026-03-08T17:53:07.275778",
+  "val_rmse": 0.11192061193622792,
+  "val_rmse_per_horizon": [
+    0.10773930220226205,
+    0.11595123765328724
+  ],
   "horizons": [
     90,
     365
@@ -36,6 +40,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.3,
+  "confidence_score": 0.13,
   "training_rows": 672
 }

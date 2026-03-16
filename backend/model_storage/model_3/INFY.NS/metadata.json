@@ -1,8 +1,12 @@
 {
   "version": "3.0",
   "ticker": "INFY.NS",
-  "last_retrained": "2026-03-06T19:22:55.878394",
-  "val_rmse": 0.1379510983481816,
+  "last_retrained": "2026-03-08T17:49:40.107865",
+  "val_rmse": 0.138074593469738,
+  "val_rmse_per_horizon": [
+    0.176395015317707,
+    0.08374953907176295
+  ],
   "horizons": [
     90,
     365
@@ -36,6 +40,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.3,
+  "confidence_score": 0.11,
   "training_rows": 672
 }
