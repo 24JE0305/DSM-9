@@ -1,8 +1,12 @@
 {
   "version": "3.0",
   "ticker": "HINDZINC.NS",
-  "last_retrained": "2026-03-06T19:25:38.870938",
-  "val_rmse": 0.6663368988484782,
+  "last_retrained": "2026-03-08T17:52:30.674913",
+  "val_rmse": 0.36955781416552813,
+  "val_rmse_per_horizon": [
+    0.5127847237975283,
+    0.10098407330613457
+  ],
   "horizons": [
     90,
     365
@@ -36,6 +40,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.3,
+  "confidence_score": 0.23,
   "training_rows": 672
 }

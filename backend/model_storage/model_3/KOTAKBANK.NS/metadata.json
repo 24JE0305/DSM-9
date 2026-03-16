@@ -1,8 +1,12 @@
 {
   "version": "3.0",
   "ticker": "KOTAKBANK.NS",
-  "last_retrained": "2026-03-06T19:23:38.069037",
-  "val_rmse": 0.028870385264086872,
+  "last_retrained": "2026-03-08T17:50:26.226353",
+  "val_rmse": 0.028876786550893225,
+  "val_rmse_per_horizon": [
+    0.026709845395379544,
+    0.030892098697994242
+  ],
   "horizons": [
     90,
     365
@@ -36,6 +40,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.71,
+  "confidence_score": 0.51,
   "training_rows": 672
 }

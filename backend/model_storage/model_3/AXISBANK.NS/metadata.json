@@ -1,8 +1,12 @@
 {
   "version": "3.0",
   "ticker": "AXISBANK.NS",
-  "last_retrained": "2026-03-06T19:23:45.368951",
-  "val_rmse": 0.05946306693104717,
+  "last_retrained": "2026-03-08T17:50:33.749547",
+  "val_rmse": 0.05982536724956734,
+  "val_rmse_per_horizon": [
+    0.06617079251800824,
+    0.0527216781848787
+  ],
   "horizons": [
     90,
     365
@@ -36,6 +40,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.41,
+  "confidence_score": 0.53,
   "training_rows": 672
 }

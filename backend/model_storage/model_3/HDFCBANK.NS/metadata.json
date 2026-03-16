@@ -1,8 +1,12 @@
 {
   "version": "3.0",
   "ticker": "HDFCBANK.NS",
-  "last_retrained": "2026-03-06T19:22:22.576481",
-  "val_rmse": 0.12612977935973757,
+  "last_retrained": "2026-03-08T17:49:10.730643",
+  "val_rmse": 0.12612978095232077,
+  "val_rmse_per_horizon": [
+    0.06708921526976316,
+    0.16527698109733316
+  ],
   "horizons": [
     90,
     365
@@ -36,6 +40,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.3,
+  "confidence_score": 0.11,
   "training_rows": 672
 }

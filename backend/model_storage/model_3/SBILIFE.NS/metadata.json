@@ -1,8 +1,12 @@
 {
   "version": "3.0",
   "ticker": "SBILIFE.NS",
-  "last_retrained": "2026-03-06T19:26:27.022667",
-  "val_rmse": 0.06949650862653985,
+  "last_retrained": "2026-03-08T17:53:20.561883",
+  "val_rmse": 0.06124094157936323,
+  "val_rmse_per_horizon": [
+    0.06869716567654682,
+    0.05274092603531946
+  ],
   "horizons": [
     90,
     365
@@ -36,6 +40,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.31,
+  "confidence_score": 0.57,
   "training_rows": 672
 }

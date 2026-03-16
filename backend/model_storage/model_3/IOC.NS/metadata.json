@@ -1,8 +1,12 @@
 {
   "version": "3.0",
   "ticker": "IOC.NS",
-  "last_retrained": "2026-03-06T19:26:02.443067",
-  "val_rmse": 0.07113922642558566,
+  "last_retrained": "2026-03-08T17:52:56.109316",
+  "val_rmse": 0.06808707541691211,
+  "val_rmse_per_horizon": [
+    0.06503630736350788,
+    0.07100688982187495
+  ],
   "horizons": [
     90,
     365
@@ -36,6 +40,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.3,
+  "confidence_score": 0.26,
   "training_rows": 672
 }

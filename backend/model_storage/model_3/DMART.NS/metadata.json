@@ -1,8 +1,12 @@
 {
   "version": "3.0",
   "ticker": "DMART.NS",
-  "last_retrained": "2026-03-06T19:25:52.266520",
-  "val_rmse": 0.1000231432326035,
+  "last_retrained": "2026-03-08T17:52:45.231084",
+  "val_rmse": 0.10192514656012672,
+  "val_rmse_per_horizon": [
+    0.11987151689059256,
+    0.08005179848669856
+  ],
   "horizons": [
     90,
     365
@@ -36,6 +40,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.3,
+  "confidence_score": 0.15,
   "training_rows": 672
 }

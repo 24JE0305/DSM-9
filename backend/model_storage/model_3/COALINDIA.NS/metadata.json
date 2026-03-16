@@ -1,8 +1,12 @@
 {
   "version": "3.0",
   "ticker": "COALINDIA.NS",
-  "last_retrained": "2026-03-06T19:25:28.478513",
-  "val_rmse": 0.21326151244820477,
+  "last_retrained": "2026-03-08T17:52:23.565152",
+  "val_rmse": 0.1939056212503931,
+  "val_rmse_per_horizon": [
+    0.05832659106506541,
+    0.267949227802079
+  ],
   "horizons": [
     90,
     365
@@ -36,6 +40,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.3,
+  "confidence_score": 0.17,
   "training_rows": 672
 }

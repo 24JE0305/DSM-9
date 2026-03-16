@@ -1,8 +1,12 @@
 {
   "version": "3.0",
   "ticker": "BHARTIARTL.NS",
-  "last_retrained": "2026-03-06T19:22:30.129927",
-  "val_rmse": 0.06944908217984364,
+  "last_retrained": "2026-03-08T17:49:15.970272",
+  "val_rmse": 0.032262563716222666,
+  "val_rmse_per_horizon": [
+    0.037098708699934105,
+    0.026559967015869712
+  ],
   "horizons": [
     90,
     365
@@ -36,6 +40,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.31,
+  "confidence_score": 0.79,
   "training_rows": 672
 }

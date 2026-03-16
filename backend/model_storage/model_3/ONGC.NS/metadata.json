@@ -1,8 +1,12 @@
 {
   "version": "3.0",
   "ticker": "ONGC.NS",
-  "last_retrained": "2026-03-06T19:24:22.580892",
-  "val_rmse": 0.14093090995646324,
+  "last_retrained": "2026-03-08T17:51:07.974081",
+  "val_rmse": 0.17695444714572323,
+  "val_rmse_per_horizon": [
+    0.10079958273934285,
+    0.22905282545489689
+  ],
   "horizons": [
     90,
     365
@@ -36,6 +40,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.3,
+  "confidence_score": 0.14,
   "training_rows": 672
 }

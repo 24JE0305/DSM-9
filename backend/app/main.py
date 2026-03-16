@@ -1,17 +1,14 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from app.schemas import PredictionRequest, PredictionResponse
-from app.inference import predict_ticker
+from app.services.screener import run_screener
+from app.services.explainer import explain_ticker
 import json
 import pandas as pd
-from app.services.backtest_service import run_backtest
 import os
 from app.config import TOP50_FILE
 from app.model_3.inference_v3 import predict_v3
 from app.services.backtest_v3 import run_backtest_v3
 
-# --- Model 2 Imports ---
-from app.model_2.inference_v2 import predict_v2
 
 
 app = FastAPI(title="DSM-9 Market Prediction API (Combined)")
@@ -51,73 +48,6 @@ def get_history(ticker: str):
              df.reset_index(inplace=True)
              
         return df.to_dict(orient="records")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-# ==========================================
-#          MODEL 1.0 ENDPOINTS
-# ==========================================
-
-@app.post("/predict", response_model=PredictionResponse)
-def predict(req: PredictionRequest):
-    try:
-        return predict_ticker(req.ticker)
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
-
-
-# ==========================================
-#          MODEL 2.0 ENDPOINTS
-# ==========================================
-
-@app.get("/predict_v2/{ticker}")
-def predict_model_2(ticker: str):
-    try:
-        result = predict_v2(ticker)
-        return result
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
-
-    
-'''
-Component	Famous Equation	Purpose
-Growth Rating	Sharpe Ratio	Risk-adjusted growth
-Financial Health	Piotroski F-Score	Fundamental strength
-Safety Rating	Altman Z-Score	Bankruptcy risk
-'''
-# ==========================================
-#          BACKTEST ENDPOINTS
-# ==========================================
-# Add this import at the top of app/main.py:
-#   from app.services.backtest_service import run_backtest
-
-@app.get("/backtest_v2/{ticker}")
-def backtest_model_2(
-    ticker: str,
-    horizon: int = 90,   # ?horizon=90
-    step: int = 30,      # ?step=30
-):
-    """
-    Walk-forward backtest for Model 2 on a single ticker.
-
-    Query params
-    ------------
-    horizon : int  — How many days each trade is held (default 90)
-    step    : int  — How often the model re-evaluates in rows (default 30)
-
-    Example
-    -------
-    GET /backtest_v2/ADANIENT.NS
-    GET /backtest_v2/ADANIENT.NS?horizon=90&step=30
-    """
-    try:
-        result = run_backtest(ticker, horizon=horizon, step=step)
-        return result
-    except FileNotFoundError as e:
-        raise HTTPException(status_code=404, detail=str(e))
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -167,24 +97,89 @@ def backtest_model_3(ticker: str, horizon: int = 90, step: int = 30):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# ── Side-by-side model comparison ───────────────────────────
+# ============================================================
+# ADD THIS TO app/main.py
+# ============================================================
 
-@app.get("/compare/{ticker}")
-def compare_models(ticker: str):
+# Add this import at the top of main.py:
+#   from app.services.screener import run_screener
+
+# ── Screener Endpoint ────────────────────────────────────────
+
+@app.get("/screener")
+def stock_screener(
+    horizon: int = 90,
+    signal: str = None,           # "Bullish" or "Bullish,Strong Bullish"
+    confidence: str = None,       # "High" or "High,Moderate"
+    min_return: float = None,     # 5.0 means 5%
+    max_return: float = None,     # 50.0 means 50%
+    min_agreement: float = None,  # 0.7
+    volatility: str = None,       # "Low" or "Low,Moderate"
+    sort_by: str = "return",      # return | confidence | agreement
+    limit: int = 50,
+):
     """
-    Run both Model 2 and Model 3 and return side-by-side predictions.
-    Useful for evaluating upgrade quality.
+    Screen all Nifty Top-50 stocks using Model 3.0 predictions.
+
+    Examples
+    --------
+    # All bullish stocks with high confidence, sorted by return
+    GET /screener?signal=Bullish,Strong Bullish&confidence=High&sort_by=return
+
+    # Stocks with >5% expected return in 90 days, high model agreement
+    GET /screener?min_return=5&min_agreement=0.7&horizon=90
+
+    # Best 10 long-term (365d) picks
+    GET /screener?horizon=365&sort_by=return&limit=10
+
+    # Conservative picks — high confidence, low volatility
+    GET /screener?confidence=High&volatility=Low&sort_by=confidence
     """
-    result = {"ticker": ticker, "generated_at": __import__('datetime').datetime.utcnow().isoformat() + "Z"}
-
     try:
-        result["model_2"] = predict_v2(ticker)
+        result = run_screener(
+            horizon=horizon,
+            signal=signal,
+            confidence=confidence,
+            min_return=min_return,
+            max_return=max_return,
+            min_agreement=min_agreement,
+            volatility=volatility,
+            sort_by=sort_by,
+            limit=limit,
+        )
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        result["model_2"] = {"error": str(e)}
+        raise HTTPException(status_code=500, detail=str(e))
 
+# ============================================================
+# ADD THIS TO app/main.py
+# ============================================================
+
+# Add this import at the top of main.py:
+#   from app.services.explainer import explain_ticker
+
+# ── Explainer Endpoint ───────────────────────────────────────
+
+@app.get("/explain/{ticker}")
+def explain_stock(ticker: str):
+    """
+    Explain why a stock is predicted Bullish or Bearish.
+    Uses XGBoost feature importance (gain) to show the top
+    drivers behind the prediction with human-readable context.
+
+    Examples
+    --------
+    GET /explain/RELIANCE.NS
+    GET /explain/TCS.NS
+    GET /explain/HDFCBANK.NS
+    """
     try:
-        result["model_3"] = predict_v3(ticker)
+        return explain_ticker(ticker)
+    except FileNotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        result["model_3"] = {"error": str(e)}
-
-    return result
+        raise HTTPException(status_code=500, detail=str(e))
