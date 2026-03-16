@@ -3,12 +3,12 @@ import { ArrowDown, Play, Users, Target, Activity, Cpu, LineChart, Shield, Globe
 import { motion } from 'framer-motion';
 import { TypewriterText } from './TypewriterText';
 
-const FeatureCard = ({ icon, title, desc, imageUrl }) => (
+const FeatureCard = ({ icon, title, desc, imageUrl, imageClassName = "" }) => (
   <div className="relative flex items-center gap-4 bg-[#111326]/60 backdrop-blur-md border border-[#2a2a4a] p-4 rounded-xl hover:bg-[#1a1c3a]/80 transition-colors shadow-lg overflow-hidden group min-h-[80px]">
     {imageUrl && (
       <>
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 group-hover:opacity-60 transition-opacity duration-300"
+          className={`absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 group-hover:opacity-60 transition-opacity duration-300 ${imageClassName}`}
           style={{ backgroundImage: `url(${imageUrl})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#111326] via-[#111326]/80 to-transparent"></div>
@@ -120,7 +120,7 @@ export function Hero() {
           <FeatureCard
             icon={<Cpu className="w-6 h-6 text-purple-400" />}
             title="Hybrid Architecture"
-            desc="LSTM + XGBoost Models"
+            desc="Transformer + BiLSTM + XGBoost"
             imageUrl="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop"
           />
           <FeatureCard
@@ -134,6 +134,7 @@ export function Hero() {
             title="Risk Mitigation"
             desc="Volatility & Model Agreement"
             imageUrl="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop"
+            imageClassName="scale-110 origin-left"
           />
           <FeatureCard
             icon={<Globe className="w-6 h-6 text-pink-400" />}
