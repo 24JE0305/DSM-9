@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "WIPRO.NS",
-  "last_retrained": "2026-03-08T17:53:02.412070",
-  "val_rmse": 0.09301086583430469,
-  "val_rmse_per_horizon": [
-    0.07029099398366351,
-    0.11118101677571866
-  ],
+  "last_retrained": "2026-03-16T19:28:24.884856",
+  "val_rmse": 0.06911151859263663,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.16,
-  "training_rows": 672
+  "confidence_score": 0.72,
+  "training_rows": 673
 }

@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "INDIGO.NS",
-  "last_retrained": "2026-03-08T17:53:49.747073",
-  "val_rmse": 0.056575771974814205,
-  "val_rmse_per_horizon": [
-    0.07472038153122672,
-    0.02860944831555228
-  ],
+  "last_retrained": "2026-03-16T19:29:25.143875",
+  "val_rmse": 0.10927723749437983,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.33,
-  "training_rows": 672
+  "confidence_score": 0.56,
+  "training_rows": 673
 }

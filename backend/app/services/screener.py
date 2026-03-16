@@ -1,6 +1,8 @@
 # ============================================================
 # DSM-9  STOCK SCREENER SERVICE
 # app/services/screener.py
+#
+# Fix vs old version: per-signal caps (MAX_BULLISH=30, MAX_BEARISH=10)
 # ============================================================
 
 import json
@@ -12,10 +14,7 @@ from app.config import TOP50_FILE
 from app.model_3.inference_v3 import predict_v3
 
 
-# ── Helpers ──────────────────────────────────────────────────
-
 def _safe_predict(ticker: str) -> Optional[dict]:
-    """Run predict_v3 safely — returns error dict on failure."""
     try:
         return predict_v3(ticker)
     except Exception as e:
@@ -28,7 +27,6 @@ def _load_tickers() -> list:
 
 
 def _matches(value: str, filter_str: Optional[str]) -> bool:
-    """Check if value matches any item in comma-separated filter."""
     if not filter_str:
         return True
     allowed = [s.strip().lower() for s in filter_str.split(",")]
@@ -38,8 +36,6 @@ def _matches(value: str, filter_str: Optional[str]) -> bool:
 def _horizon_key(horizon: int) -> str:
     return f"{horizon}_days"
 
-
-# ── Main screener ─────────────────────────────────────────────
 
 def run_screener(
     horizon: int = 90,
@@ -59,13 +55,11 @@ def run_screener(
     tickers = _load_tickers()
     h_key   = _horizon_key(horizon)
 
-    # ── Parallel predictions ─────────────────────────────────
     with ThreadPoolExecutor(max_workers=8) as pool:
         raw = list(pool.map(_safe_predict, tickers))
 
-    # ── Parse + filter ────────────────────────────────────────
-    results  = []
-    errors   = []
+    results = []
+    errors  = []
 
     for r in raw:
         if r is None:
@@ -90,12 +84,11 @@ def run_screener(
         vol_ratio  = risk.get("volatility_ratio", 0)
         pred_range = p.get("range", {})
 
-        # ── Filters ──────────────────────────────────────────
-        if not _matches(sig_bias,   signal):      continue
-        if not _matches(conf_level, confidence):  continue
-        if not _matches(vol_level,  volatility):  continue
-        if min_return   is not None and return_pct < min_return:   continue
-        if max_return   is not None and return_pct > max_return:   continue
+        if not _matches(sig_bias,    signal):      continue
+        if not _matches(conf_level,  confidence):  continue
+        if not _matches(vol_level,   volatility):  continue
+        if min_return    is not None and return_pct < min_return:   continue
+        if max_return    is not None and return_pct > max_return:   continue
         if min_agreement is not None and agreement < min_agreement: continue
 
         results.append({
@@ -112,6 +105,7 @@ def run_screener(
                 "expected": return_pct,
                 "high":     round(pred_range.get("high", 0) * 100, 2),
             },
+            "reliability": r.get("reliability", {}),
             "horizon_days": horizon,
             "generated_at": r.get("generated_at"),
         })
@@ -122,29 +116,42 @@ def run_screener(
         "confidence": lambda x: x["confidence_score"],
         "agreement":  lambda x: x["model_agreement"],
     }
-    results.sort(key=sort_map.get(sort_by, sort_map["return"]), reverse=True)
-    results = results[:limit]
+    sort_fn = sort_map.get(sort_by, sort_map["return"])
+    results.sort(key=sort_fn, reverse=True)
+
+    # ── Per-signal caps ───────────────────────────────────────
+    MAX_BULLISH = 30   # Strong Bullish + Bullish combined
+    MAX_BEARISH = 10   # Strong Bearish + Bearish combined
+
+    bullish_bucket = [r for r in results if "Bullish" in r["signal_bias"]][:MAX_BULLISH]
+    bearish_bucket = [r for r in results if "Bearish" in r["signal_bias"]][:MAX_BEARISH]
+    neutral_bucket = [r for r in results if r["signal_bias"] == "Neutral"]
+
+    results = sorted(
+        bullish_bucket + bearish_bucket + neutral_bucket,
+        key=sort_fn, reverse=True,
+    )[:limit]
 
     # ── Summary ───────────────────────────────────────────────
-    total          = len(results)
-    bullish_count  = sum(1 for r in results if "bullish" in r["signal_bias"].lower())
-    bearish_count  = sum(1 for r in results if "bearish" in r["signal_bias"].lower())
-    avg_return     = round(sum(r["expected_return"]  for r in results) / total, 2) if total else 0
-    avg_conf       = round(sum(r["confidence_score"] for r in results) / total, 2) if total else 0
-    avg_agreement  = round(sum(r["model_agreement"]  for r in results) / total, 2) if total else 0
+    total         = len(results)
+    bullish_count = sum(1 for r in results if "Bullish" in r["signal_bias"])
+    bearish_count = sum(1 for r in results if "Bearish" in r["signal_bias"])
+    avg_return    = round(sum(r["expected_return"]  for r in results) / total, 2) if total else 0
+    avg_conf      = round(sum(r["confidence_score"] for r in results) / total, 2) if total else 0
+    avg_agreement = round(sum(r["model_agreement"]  for r in results) / total, 2) if total else 0
 
     return {
         "total_matched":  total,
         "total_screened": len(tickers),
         "failed":         len(errors),
         "summary": {
-            "bullish_count":   bullish_count,
-            "bearish_count":   bearish_count,
-            "neutral_count":   total - bullish_count - bearish_count,
-            "avg_return_pct":  avg_return,
-            "avg_confidence":  avg_conf,
-            "avg_agreement":   avg_agreement,
-            "market_mood":     (
+            "bullish_count":  bullish_count,
+            "bearish_count":  bearish_count,
+            "neutral_count":  total - bullish_count - bearish_count,
+            "avg_return_pct": avg_return,
+            "avg_confidence": avg_conf,
+            "avg_agreement":  avg_agreement,
+            "market_mood": (
                 "Bullish" if bullish_count > bearish_count
                 else "Bearish" if bearish_count > bullish_count
                 else "Neutral"
@@ -162,6 +169,6 @@ def run_screener(
             "limit":         limit,
         },
         "results":    results,
-        "errors":     errors,   # shows which tickers failed and why
+        "errors":     errors,
         "disclaimer": "AI-generated probabilistic forecast. Not financial advice.",
     }

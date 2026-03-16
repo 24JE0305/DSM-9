@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "HINDALCO.NS",
-  "last_retrained": "2026-03-08T17:53:12.449898",
-  "val_rmse": 0.14750977380394414,
-  "val_rmse_per_horizon": [
-    0.16875353412782837,
-    0.12263976294313932
-  ],
+  "last_retrained": "2026-03-16T19:28:40.048661",
+  "val_rmse": 0.12246497444317457,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.1,
-  "training_rows": 672
+  "confidence_score": 0.51,
+  "training_rows": 673
 }

@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "HINDUNILVR.NS",
-  "last_retrained": "2026-03-08T17:49:51.115950",
-  "val_rmse": 0.12939781602858014,
-  "val_rmse_per_horizon": [
-    0.15117593460808232,
-    0.10311850649279862
-  ],
+  "last_retrained": "2026-03-16T19:25:25.972931",
+  "val_rmse": 0.16419248001006184,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.39,
-  "training_rows": 672
+  "confidence_score": 0.34,
+  "training_rows": 673
 }

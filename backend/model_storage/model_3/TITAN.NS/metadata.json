@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "TITAN.NS",
-  "last_retrained": "2026-03-08T17:50:53.743821",
-  "val_rmse": 0.16941389313486963,
-  "val_rmse_per_horizon": [
-    0.14366144922215876,
-    0.19173816099466265
-  ],
+  "last_retrained": "2026-03-16T19:26:26.314513",
+  "val_rmse": 0.09922982931722091,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.33,
-  "training_rows": 672
+  "confidence_score": 0.6,
+  "training_rows": 673
 }

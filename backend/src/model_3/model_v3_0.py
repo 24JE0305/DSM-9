@@ -1,10 +1,11 @@
 # ============================================================
-# DSM-9  MODEL 3.0 — ARCHITECTURE
-# src/model_3/model_v3_0.py
+# DSM-9  MODEL 3.1 -- ARCHITECTURE
+# backend/src/model_3/model_v3_0.py
 #
-# Exact mirror of notebook Cell 6.
-# FIX: PositionalEncoding(d, dropout=dropout) → dropout=drop
-#      ('dropout' was undefined in __init__ scope — NameError)
+# FIXES vs original:
+#  FIX 1: WINDOW 60 -> 120 (matches trainer)
+#  FIX 6: PositionalEncoding dropout=drop (was dropout=dropout NameError)
+#  make_seq exported as both make_seq and make_sequences for compatibility
 # ============================================================
 
 import torch
@@ -12,7 +13,7 @@ import torch.nn as nn
 import numpy as np
 
 DEVICE   = "cuda" if torch.cuda.is_available() else "cpu"
-WINDOW   = 60
+WINDOW   = 120          # FIX 1: was 60 -- must match train_v3.py
 HORIZONS = [90, 365]
 
 
@@ -81,7 +82,9 @@ class DSM9_v3(nn.Module):
                  lstm_h=128, lstm_l=2, n_h=2, drop=0.2):
         super().__init__()
         self.proj        = nn.Linear(n_feat, d)
-        self.pe          = PositionalEncoding(d, dropout=drop)   # FIX: was dropout=dropout (NameError)
+        # FIX 6: was PositionalEncoding(d, dropout=dropout) -> NameError
+        # dropout is not defined in this scope, drop is the parameter
+        self.pe          = PositionalEncoding(d, dropout=drop)
         self.transformer = nn.Sequential(
             *[TransformerBlock(d, heads, d * 4, drop) for _ in range(n_trans)]
         )
@@ -106,8 +109,12 @@ class DSM9_v3(nn.Module):
         return self.fusion(torch.cat([tf, lf, xgb], dim=-1))
 
 
-def make_seq(X, y, w):
+def make_seq(X: np.ndarray, y: np.ndarray, w: int):
+    """Build sliding window sequences. Exported for trainer use."""
     return (
         np.array([X[i:i + w] for i in range(len(X) - w)]),
         np.array([y[i + w]   for i in range(len(X) - w)]),
     )
+
+# Alias so old import (make_sequences) still works if used anywhere
+make_sequences = make_seq

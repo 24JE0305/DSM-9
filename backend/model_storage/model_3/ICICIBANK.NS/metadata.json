@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "ICICIBANK.NS",
-  "last_retrained": "2026-03-08T17:49:35.725423",
-  "val_rmse": 0.06468209054235123,
-  "val_rmse_per_horizon": [
-    0.07431375884167053,
-    0.0533386437836573
-  ],
+  "last_retrained": "2026-03-16T19:25:09.993019",
+  "val_rmse": 0.07023841159201254,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.46,
-  "training_rows": 672
+  "confidence_score": 0.72,
+  "training_rows": 673
 }

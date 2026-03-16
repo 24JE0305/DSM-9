@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "HCLTECH.NS",
-  "last_retrained": "2026-03-08T17:50:21.492644",
-  "val_rmse": 0.08099696778946494,
-  "val_rmse_per_horizon": [
-    0.09927270841087024,
-    0.05714846408212192
-  ],
+  "last_retrained": "2026-03-16T19:25:53.912571",
+  "val_rmse": 0.08990433724370789,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.18,
-  "training_rows": 672
+  "confidence_score": 0.64,
+  "training_rows": 673
 }

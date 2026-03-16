@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "ETERNAL.NS",
-  "last_retrained": "2026-03-08T17:51:47.268544",
-  "val_rmse": 0.04407230187515579,
-  "val_rmse_per_horizon": [
-    0.06194205306648824,
-    0.006922257367223267
-  ],
+  "last_retrained": "2026-03-16T19:27:24.986794",
+  "val_rmse": 0.24255013843154327,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.7,
-  "training_rows": 558
+  "confidence_score": 0.3,
+  "training_rows": 564
 }

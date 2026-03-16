@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "BEL.NS",
-  "last_retrained": "2026-03-08T17:51:19.548162",
-  "val_rmse": 0.1005723754816975,
-  "val_rmse_per_horizon": [
-    0.1398057973682197,
-    0.026152331488787182
-  ],
+  "last_retrained": "2026-03-16T19:26:52.176655",
+  "val_rmse": 0.22783215453441658,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.41,
-  "training_rows": 672
+  "confidence_score": 0.3,
+  "training_rows": 673
 }

@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "NTPC.NS",
-  "last_retrained": "2026-03-08T17:51:03.703021",
-  "val_rmse": 0.07901359032376065,
-  "val_rmse_per_horizon": [
-    0.0899683334911224,
-    0.06627211993389337
-  ],
+  "last_retrained": "2026-03-16T19:26:34.925803",
+  "val_rmse": 0.1051251727507593,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.25,
-  "training_rows": 672
+  "confidence_score": 0.58,
+  "training_rows": 673
 }

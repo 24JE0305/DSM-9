@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "HAL.NS",
-  "last_retrained": "2026-03-08T17:51:41.838276",
-  "val_rmse": 0.10766406851688738,
-  "val_rmse_per_horizon": [
-    0.1320922490337095,
-    0.07572807302734251
-  ],
+  "last_retrained": "2026-03-16T19:27:18.759979",
+  "val_rmse": 0.23934191816130196,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.4,
-  "training_rows": 672
+  "confidence_score": 0.3,
+  "training_rows": 673
 }

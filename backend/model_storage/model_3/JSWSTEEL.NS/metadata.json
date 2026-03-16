@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "JSWSTEEL.NS",
-  "last_retrained": "2026-03-08T17:51:25.795173",
-  "val_rmse": 0.04641768238330495,
-  "val_rmse_per_horizon": [
-    0.0503676799664734,
-    0.04209868513943959
-  ],
+  "last_retrained": "2026-03-16T19:27:00.735053",
+  "val_rmse": 0.0435527600773136,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.51,
-  "training_rows": 672
+  "confidence_score": 0.83,
+  "training_rows": 673
 }

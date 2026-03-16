@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "SHRIRAMFIN.NS",
-  "last_retrained": "2026-03-08T17:53:43.107725",
-  "val_rmse": 0.09047111652932606,
-  "val_rmse_per_horizon": [
-    0.10230643221131072,
-    0.07683384527874598
-  ],
+  "last_retrained": "2026-03-16T19:29:13.911204",
+  "val_rmse": 0.10387977224327008,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.32,
-  "training_rows": 672
+  "confidence_score": 0.58,
+  "training_rows": 673
 }
