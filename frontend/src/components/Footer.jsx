@@ -12,7 +12,7 @@ export function Footer() {
             DSM-9
           </span>
           <p className="text-sm text-gray-500 max-w-sm text-center md:text-left">
-            Empowering the modern investor with real-time deep learning analytics.
+            Advanced quantitative modeling and market foresight for the modern investor.
           </p>
         </div>
 
@@ -35,7 +35,7 @@ export function Footer() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-12 pt-8 border-t border-[#2a2a4a]/50 flex flex-col items-center justify-between text-xs text-gray-500 md:flex-row gap-4">
-        <p>&copy; {new Date().getFullYear()} DSM-9 Predictive Intelligence. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} DSM-9 Predictive Intelligence. All rights reserved. Trading involves significant risk of loss.</p>
         <div className="flex space-x-6">
           <a href="#" className="hover:text-gray-400">Privacy Policy</a>
           <a href="#" className="hover:text-gray-400">Terms of Service</a>

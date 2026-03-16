@@ -62,9 +62,9 @@ export function Navbar() {
 
         {/* Action Buttons */}
         <div className="hidden md:flex items-center gap-4">
-          
+
           <button className="px-6 py-2 rounded-lg bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-white font-medium hover:opacity-90 transition-opacity shadow-[0_0_15px_rgba(236,72,153,0.5)]">
-            Login
+            Access Terminal
           </button>
         </div>
       </nav>

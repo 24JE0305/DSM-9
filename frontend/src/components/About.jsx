@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Database, Zap, Shield, TrendingUp } from 'lucide-react';
 import { TypewriterText } from './TypewriterText';
 
-function FadeInView({ children, direction = 'left', delay = 0 }) {
+function FadeInUp({ children, delay = 0 }) {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef(null);
 
@@ -18,43 +18,85 @@ function FadeInView({ children, direction = 'left', delay = 0 }) {
     return () => observer.disconnect();
   }, []);
 
-  const slideClass = direction === 'left' ? '-translate-x-16' : 'translate-x-16';
-
   return (
     <div
       ref={ref}
-      className={`transition-all duration-1000 transform flex w-full max-w-4xl mx-auto ${isVisible ? 'opacity-100 translate-x-0' : `opacity-0 ${slideClass}`}`}
+      className={`transition-all duration-1000 transform w-full ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
-      <div className={`flex w-full items-center gap-8 text-left justify-start`}>
-        {children}
-      </div>
+      {children}
     </div>
   );
 }
+
+const FlipCard = ({ icon, title, desc, imageUrl }) => {
+  return (
+    <div className="group w-full h-[320px] [perspective:1000px]">
+      <div className="relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+        {/* Front Side */}
+        <div className="absolute inset-0 bg-[#111326]/60 backdrop-blur-md ring-1 ring-[#2a2a4a] group-hover:ring-purple-500/50 shadow-[0_10px_30px_rgba(0,0,0,0.5)] group-hover:shadow-[0_0_30px_rgba(168,85,247,0.3)] rounded-2xl flex flex-col items-center justify-center text-center overflow-hidden [backface-visibility:hidden]">
+
+          {/* Background Image with Overlay */}
+          {imageUrl && (
+            <>
+              <div
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 group-hover:opacity-80 transition-opacity duration-500"
+                style={{ backgroundImage: `url(${imageUrl})` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a16] via-[#111326]/80 to-transparent"></div>
+            </>
+          )}
+
+          {/* Text Content aligned to the bottom */}
+          <div className="relative z-10 p-8 flex flex-col items-center justify-end w-full h-full pb-10">
+            
+            <h3 className="text-2xl font-bold tracking-tight text-white drop-shadow-md text-center">
+              {title}
+            </h3>
+            <p className="text-gray-300 mt-2 text-sm font-medium opacity-90 flex items-center gap-1 drop-shadow-sm group-hover:text-white transition-colors">
+              <span className="animate-pulse">Hover to see details</span>
+            </p>
+          </div>
+        </div>
+
+        {/* Back Side */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1a1c3a] to-[#0a0a16] backdrop-blur-xl ring-1 ring-purple-500/60 shadow-[0_0_40px_rgba(168,85,247,0.2)] rounded-2xl p-8 flex flex-col items-center justify-center text-center [transform:rotateY(180deg)] [backface-visibility:hidden]">
+          <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400 mb-4 tracking-wider uppercase text-sm">{title}</h3>
+          <p className="text-lg text-gray-300 leading-relaxed font-medium">
+            {desc}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 
 export function About() {
   const features = [
     {
       icon: <Database className="w-12 h-12 text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.5)] flex-shrink-0" />,
-      title: 'Vast Data Pipelines',
-      desc: 'Ingesting millions of financial data points daily to maintain an unparalleled understanding of market history'
+      title: 'Hybrid Machine Learning',
+      desc: 'Fusing neural networks with advanced tree-based algorithms for superior predictive accuracy and reduced overfitting.',
+      imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop' // Placeholder: Abstract tech network
     },
     {
       icon: <Zap className="w-12 h-12 text-purple-400 drop-shadow-[0_0_8px_rgba(168,85,247,0.5)] flex-shrink-0" />,
-      title: 'Real-time Inference',
-      desc: 'Executing complex deep learning models in milliseconds to give you leading-edge predictions'
+      title: 'Historical & Active Data',
+      desc: 'Processing years of historical price action alongside current market momentum to calculate robust trajectories.',
+      imageUrl: 'https://images.unsplash.com/photo-1642543492481-44e81e3914a7?q=80&w=800&auto=format&fit=crop' // Placeholder: Stock charts on screens
     },
     {
       icon: <Shield className="w-12 h-12 text-pink-400 drop-shadow-[0_0_8px_rgba(236,72,153,0.5)] flex-shrink-0" />,
-      title: 'Confidence Scoring',
-      desc: 'Dynamically evaluated analyst sentiment built securely into every forecast'
+      title: 'Dynamic Risk Scoring',
+      desc: 'Evaluating model agreement and localized asset volatility to keep you informed of potential market turbulence.',
+      imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop' // Placeholder: Data analytics visualization
     },
     {
       icon: <TrendingUp className="w-12 h-12 text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.5)] flex-shrink-0" />,
-      title: 'Min/Max Cones',
-      desc: 'Visualizing actionable standard deviation boundaries directly on your asset timeline'
+      title: 'Multi-Horizon Targets',
+      desc: 'Projecting expected price targets across short, medium, and long-term investment windows.',
+      imageUrl: 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=800&auto=format&fit=crop' // Placeholder: Rising abstract graph
     }
   ];
 
@@ -62,35 +104,42 @@ export function About() {
     <section className="py-24 relative overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center mb-24">
-          <h2 className="text-base/7 font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400 uppercase tracking-widest drop-shadow-sm">The Engine</h2>
+          <h2 className="text-base/7 font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400 uppercase tracking-widest drop-shadow-sm">The Architecture</h2>
           <p className="mt-2 text-4xl font-semibold tracking-tight text-white sm:text-5xl drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
-            What is DSM-9?
+            What powers DSM-9?
           </p>
-          <p className="mt-6 text-xl/8 text-gray-400 min-h-[96px]">
-            <TypewriterText text="DSM-9 is an advanced artificial intelligence matrix designed to untangle complex macroeconomic threads. By evaluating structural patterns in both historical and active market streams, it serves as an uncompromised copilot for your financial strategy." />
+
+          <div className="mt-12 text-left bg-[#111326]/50 p-6 sm:p-8 rounded-2xl border border-[#2a2a4a] shadow-xl">
+            <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+              <Zap className="w-6 h-6 text-purple-400" />
+              The Vision Behind DSM-9
+            </h3>
+            <div className="text-gray-300 space-y-4 text-lg leading-relaxed">
+              <p>
+                For decades, institutional hedge funds and Wall Street quantitative firms have possessed a massive advantage: predictive AI. Meanwhile, everyday investors have been forced to rely on delayed news, emotion, and outdated technical indicators.
+              </p>
+              <p>
+                DSM-9 was built to level the playing field. We engineered a system that ingests millions of data points and recognizes hidden market patterns that the human eye simply cannot see. We don't believe in "get-rich-quick" schemes or crystal balls. We believe in data, probability, and rigorous risk management. DSM-9 is your ultimate quantitative copilot, designed to remove human emotion from trading and replace it with pure, calculated foresight.
+              </p>
+            </div>
+          </div>
+
+          <p className="mt-12 text-xl/8 text-gray-400 min-h-[96px]">
+            <TypewriterText text="DSM-9 is a state-of-the-art predictive engine built specifically for the Indian equity market. By fusing the sequential pattern recognition of Deep Learning (LSTM) with the decision-tree precision of Gradient Boosting (XGBoost), it provides data-driven foresight into asset price movements to serve as your quantitative copilot." />
           </p>
         </div>
 
-        <div className="flex flex-col gap-y-16 w-full">
-          {features.map((feature, idx) => {
-            const direction = idx % 2 === 0 ? 'left' : 'right';
-
-            return (
-              <FadeInView key={feature.title} direction={direction}>
-                <div className="rounded-2xl bg-[#111326]/50 p-6 ring-1 ring-[#2a2a4a] shadow-[0_10px_30px_rgba(0,0,0,0.5)] flex-shrink-0 backdrop-blur-sm">
-                  {feature.icon}
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-3xl font-bold tracking-tight text-white drop-shadow-md">
-                    {feature.title}
-                  </h3>
-                  <p className="mt-4 text-xl/8 text-gray-400">
-                    {feature.desc}
-                  </p>
-                </div>
-              </FadeInView>
-            );
-          })}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl mx-auto mt-16">
+          {features.map((feature, idx) => (
+            <FadeInUp key={feature.title} delay={idx * 150}>
+              <FlipCard
+                icon={feature.icon}
+                title={feature.title}
+                desc={feature.desc}
+                imageUrl={feature.imageUrl}
+              />
+            </FadeInUp>
+          ))}
         </div>
       </div>
 

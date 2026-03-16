@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { ResponsiveContainer, ComposedChart, XAxis, YAxis, Tooltip, CartesianGrid, Area, Line, ReferenceLine, Label } from 'recharts';
+import { ResponsiveContainer, ComposedChart, XAxis, YAxis, Tooltip, CartesianGrid, Area, Line, ReferenceLine, ReferenceDot, Label } from 'recharts';
 
 // Custom Label for the current price, min, max, exp on the right axis
 const CustomRightLabel = ({ viewBox, value, bg, color, text, yOffset = 0 }) => {
@@ -209,6 +209,25 @@ export function PriceChart({ data, predictions, lastClose }) {
                   <ReferenceLine y={lastClose} stroke="#6b7280" strokeDasharray="3 3" strokeOpacity={0.5}>
                     <Label position="right" content={<CustomRightLabel bg="#374151" color="#fff" text={`Cur ₹${lastClose.toFixed(2)}`} yOffset={curYOffset} />} />
                   </ReferenceLine>
+
+                  {/* Dot for Current Price at the last historical timestamp */}
+                  {(() => {
+                    // Find the timestamp for the current price (last historical data point)
+                    const lastPoint = data[data.length - 1];
+                    if (!lastPoint) return null;
+                    const dateObj = new Date(lastPoint.Date);
+                    return (
+                      <ReferenceDot
+                        x={dateObj.getTime()}
+                        y={lastClose}
+                        r={6}
+                        fill="#fff"
+                        stroke="#ec4899"
+                        strokeWidth={2}
+                        isFront={true}
+                      />
+                    );
+                  })()}
                 </>
               );
             })()}

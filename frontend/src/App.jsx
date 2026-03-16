@@ -8,7 +8,7 @@ import { MetricCard } from './components/MetricCard'
 import { PriceChart } from './components/PriceChart'
 import { ForecastGrid } from './components/ForecastGrid'
 import { AnalystGauge } from './components/AnalystGauge'
-import { Loader2, Search } from 'lucide-react'
+import { Loader2, Search, Activity } from 'lucide-react'
 
 const API_URL = "http://localhost:8000";
 
@@ -102,12 +102,20 @@ function App() {
           {/* Dashboard Header */}
           <div className="flex flex-col items-center justify-center mb-16 text-center pt-8 relative z-10">
             <h2 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 uppercase tracking-wider drop-shadow-[0_0_15px_rgba(236,72,153,0.3)] pb-2">
-              Market Analytics Dashboard
+              Predictive Analytics Terminal
             </h2>
-            <p className="text-gray-400 mt-2 text-lg">V2 Hybrid Engine: LSTM Deep Learning + XGBoost</p>
+            <div className="flex flex-col md:flex-row items-center gap-4 mt-2">
+              <p className="text-gray-400 text-lg">Powered by our V2 Hybrid Architecture: Deep Learning (LSTM) & Gradient Boosting (XGBoost)</p>
+              <button
+                onClick={(e) => { e.preventDefault(); document.getElementById('about-section')?.scrollIntoView({ behavior: 'smooth' }); }}
+                className="text-xs bg-[#2a2a4a] hover:bg-[#3a3a5a] text-white px-3 py-1.5 rounded-md border border-purple-500/30 transition-colors"
+              >
+                Inside the Algorithm
+              </button>
+            </div>
             {data && data.model_info && data.model_info.last_retrained && (
               <span className="mt-4 px-4 py-1.5 bg-[#111326] border border-[#2a2a4a] rounded-full text-xs text-purple-400 font-semibold tracking-wider">
-                LAST RETRAINED: {data.model_info.last_retrained.split('T')[0]}
+                LAST RETRAINED: {data.model_info.last_retrained.split(' ')[0]}
               </span>
             )}
           </div>
@@ -121,18 +129,18 @@ function App() {
           {loading ? (
             <div className="flex flex-col items-center justify-center h-[60vh] relative z-10">
               <Loader2 className="w-12 h-12 animate-spin text-purple-500 mb-4 drop-shadow-[0_0_10px_rgba(168,85,247,0.8)]" />
-              <p className="text-gray-300 font-medium animate-pulse">Running Hybrid Prediction Engine for {selectedTicker}...</p>
+              <p className="text-gray-300 font-medium animate-pulse">Aggregating market data and executing hybrid inference for {selectedTicker}...</p>
             </div>
           ) : (
             <>
               {!data ? (
                 <div className='flex flex-col items-center justify-center'>
-                 <div className="flex flex-col items-center justify-center h-[30vh] w-[50vw] text-gray-400 border-2 border-dashed border-[#2a2a4a] bg-[#111326]/40 backdrop-blur-sm rounded-2xl mb-10 relative z-10 shadow-lg">
-                  <span className="text-4xl mb-4 animate-bounce">👇</span>
-                  <p className="font-medium">Select a ticker below and click <span className="text-purple-400 font-bold">Analyze</span></p>
-                </div> 
+                  <div className="flex flex-col items-center justify-center h-[30vh] w-[50vw] text-gray-400 border-2 border-dashed border-[#2a2a4a] bg-[#111326]/40 backdrop-blur-sm rounded-2xl mb-10 relative z-10 shadow-lg">
+                    <Activity className="w-12 h-12 text-gray-500 mb-4 animate-pulse" />
+                    <p className="font-medium text-center px-4">Select an NSE asset below and initialize the engine to generate an AI-driven forecast.</p>
+                  </div>
                 </div>
-                
+
               ) : (
                 <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500 mb-16 relative z-10">
 
@@ -185,7 +193,7 @@ function App() {
                     })()}
                   </div>
 
-                  
+
 
                   <ForecastGrid
                     predictions={data.predictions}
@@ -215,7 +223,7 @@ function App() {
                     className="bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 hover:brightness-110 text-white font-bold py-3.5 px-8 rounded-lg transition-all shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_25px_rgba(168,85,247,0.6)] hover:-translate-y-0.5 active:scale-95 text-sm flex items-center gap-2"
                   >
                     <Search className="w-5 h-5" />
-                    Analyze Insights
+                    Execute Forecast
                   </button>
                 </div>
               </div>
