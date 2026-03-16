@@ -16,13 +16,23 @@ export function Navbar() {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const scrollToFeedback = (e) => {
+    e.preventDefault();
+    setActiveTab('Feedback');
+    const el = document.getElementById('feedback-section');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const scrollToDashboard = (e) => {
+    e.preventDefault();
+    const el = document.getElementById('dashboard');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const navLinks = [
     { name: 'Home', action: scrollToTop },
     { name: 'About', action: scrollToAbout },
-    { name: 'Features', action: null },
-    { name: 'How It Works', action: null },
-    { name: 'Analytics', action: null },
-    { name: 'Contact', action: null },
+    { name: 'Feedback', action: scrollToFeedback },
   ];
 
   const handleNavClick = (e, link) => {
@@ -63,7 +73,10 @@ export function Navbar() {
         {/* Action Buttons */}
         <div className="hidden md:flex items-center gap-4">
 
-          <button className="px-6 py-2 rounded-lg bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-white font-medium hover:opacity-90 transition-opacity shadow-[0_0_15px_rgba(236,72,153,0.5)]">
+          <button
+            onClick={scrollToDashboard}
+            className="px-6 py-2 rounded-lg bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 text-white font-medium hover:opacity-90 transition-opacity shadow-[0_0_15px_rgba(236,72,153,0.5)]"
+          >
             Access Terminal
           </button>
         </div>

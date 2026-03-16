@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Navbar } from './components/Navbar'
 import { Hero } from './components/Hero'
 import { About } from './components/About'
+import { Feedback } from './components/Feedback'
 import { Footer } from './components/Footer'
 import { MetricCard } from './components/MetricCard'
 import { PriceChart } from './components/PriceChart'
@@ -50,10 +51,10 @@ function App() {
       const historyData = histRes.data;
       const lastClose = historyData.length > 0 ? historyData[historyData.length - 1].Close : 100;
 
-      const predRes = await axios.get(`${API_URL}/predict_v2/${selectedTicker}`);
+      const predRes = await axios.get(`${API_URL}/predict_v3/${selectedTicker}`);
       const rawPredictions = predRes.data.predictions;
 
-      // Transform v2 returns to expected price formats
+      // Transform v3 returns to expected price formats
       const mappedPredictions = {};
       Object.entries(rawPredictions).forEach(([period, details]) => {
         const daysLabel = period.replace('_days', 'D'); // e.g. "15_days" -> "15D"
@@ -69,7 +70,7 @@ function App() {
 
     } catch (err) {
       console.error(err);
-      setError("Failed to fetch data. Ensure backend is running and Model 2 has data for this ticker.");
+      setError("Failed to fetch data. Ensure backend is running and Model 3 has data for this ticker.");
     } finally {
       setLoading(false);
     }
@@ -105,7 +106,7 @@ function App() {
               Predictive Analytics Terminal
             </h2>
             <div className="flex flex-col md:flex-row items-center gap-4 mt-2">
-              <p className="text-gray-400 text-lg">Powered by our V2 Hybrid Architecture: Deep Learning (LSTM) & Gradient Boosting (XGBoost)</p>
+              <p className="text-gray-400 text-lg">Powered by our V3 Architecture: Transformer, BiLSTM, XGBoost & Learned Fusion</p>
               <button
                 onClick={(e) => { e.preventDefault(); document.getElementById('about-section')?.scrollIntoView({ behavior: 'smooth' }); }}
                 className="text-xs bg-[#2a2a4a] hover:bg-[#3a3a5a] text-white px-3 py-1.5 rounded-md border border-purple-500/30 transition-colors"
@@ -115,7 +116,7 @@ function App() {
             </div>
             {data && data.model_info && data.model_info.last_retrained && (
               <span className="mt-4 px-4 py-1.5 bg-[#111326] border border-[#2a2a4a] rounded-full text-xs text-purple-400 font-semibold tracking-wider">
-                LAST RETRAINED: {data.model_info.last_retrained.split(' ')[0]}
+                LAST RETRAINED: {data.model_info.last_retrained.split('T')[0]}
               </span>
             )}
           </div>
@@ -234,6 +235,10 @@ function App() {
 
       <div id="about-section">
         <About />
+      </div>
+
+      <div id="feedback-section">
+        <Feedback />
       </div>
 
       <Footer />
