@@ -29,7 +29,7 @@ function FadeInUp({ children, delay = 0 }) {
   );
 }
 
-const FlipCard = ({ icon, title, desc, imageUrl }) => {
+const FlipCard = ({ icon, title, desc, imageUrl, imageClassName = "" }) => {
   return (
     <div className="group w-full h-[320px] [perspective:1000px]">
       <div className="relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
@@ -40,7 +40,7 @@ const FlipCard = ({ icon, title, desc, imageUrl }) => {
           {imageUrl && (
             <>
               <div
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 group-hover:opacity-80 transition-opacity duration-500"
+                className={`absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 group-hover:opacity-80 transition-opacity duration-500 ${imageClassName}`}
                 style={{ backgroundImage: `url(${imageUrl})` }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a16] via-[#111326]/80 to-transparent"></div>
@@ -49,7 +49,7 @@ const FlipCard = ({ icon, title, desc, imageUrl }) => {
 
           {/* Text Content aligned to the bottom */}
           <div className="relative z-10 p-8 flex flex-col items-center justify-end w-full h-full pb-10">
-            
+
             <h3 className="text-2xl font-bold tracking-tight text-white drop-shadow-md text-center">
               {title}
             </h3>
@@ -90,7 +90,8 @@ export function About() {
       icon: <Shield className="w-12 h-12 text-pink-400 drop-shadow-[0_0_8px_rgba(236,72,153,0.5)] flex-shrink-0" />,
       title: 'Dynamic Risk Scoring',
       desc: 'Evaluating model agreement and localized asset volatility to keep you informed of potential market turbulence.',
-      imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop' // Placeholder: Data analytics visualization
+      imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop', // Placeholder: Data analytics visualization
+      imageClassName: 'scale-110 origin-left'
     },
     {
       icon: <TrendingUp className="w-12 h-12 text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.5)] flex-shrink-0" />,
@@ -125,7 +126,7 @@ export function About() {
           </div>
 
           <p className="mt-12 text-xl/8 text-gray-400 min-h-[96px]">
-            <TypewriterText text="DSM-9 is a state-of-the-art predictive engine built specifically for the Indian equity market. By fusing the sequential pattern recognition of Deep Learning (LSTM) with the decision-tree precision of Gradient Boosting (XGBoost), it provides data-driven foresight into asset price movements to serve as your quantitative copilot." />
+            <TypewriterText text="DSM-9 is a state-of-the-art predictive engine built specifically for the Indian equity market. By fusing the sequential pattern recognition of Transformers and BiLSTM with the precision of Gradient Boosting (XGBoost) using Learned Fusion, it provides data-driven foresight into asset price movements to serve as your quantitative copilot." />
           </p>
         </div>
 
@@ -137,6 +138,7 @@ export function About() {
                 title={feature.title}
                 desc={feature.desc}
                 imageUrl={feature.imageUrl}
+                imageClassName={feature.imageClassName}
               />
             </FadeInUp>
           ))}
