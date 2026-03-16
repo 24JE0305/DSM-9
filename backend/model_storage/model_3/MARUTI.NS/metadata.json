@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "MARUTI.NS",
-  "last_retrained": "2026-03-08T17:50:03.430115",
-  "val_rmse": 0.06233375192649555,
-  "val_rmse_per_horizon": [
-    0.057826435483115744,
-    0.0665364307562769
-  ],
+  "last_retrained": "2026-03-16T19:25:35.057721",
+  "val_rmse": 0.08968955116154262,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.38,
-  "training_rows": 672
+  "confidence_score": 0.64,
+  "training_rows": 673
 }

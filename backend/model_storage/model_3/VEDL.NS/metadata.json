@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "VEDL.NS",
-  "last_retrained": "2026-03-08T17:52:18.409744",
-  "val_rmse": 0.11056364193450348,
-  "val_rmse_per_horizon": [
-    0.13522309295001175,
-    0.07850702496385069
-  ],
+  "last_retrained": "2026-03-16T19:27:40.303880",
+  "val_rmse": 0.4256570674198894,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.13,
-  "training_rows": 672
+  "confidence_score": 0.3,
+  "training_rows": 673
 }

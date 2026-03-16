@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "NESTLEIND.NS",
-  "last_retrained": "2026-03-08T17:52:51.977181",
-  "val_rmse": 0.06718474002678296,
-  "val_rmse_per_horizon": [
-    0.08999046513514698,
-    0.030484336464694776
-  ],
+  "last_retrained": "2026-03-16T19:28:16.068068",
+  "val_rmse": 0.03071012014573313,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.27,
-  "training_rows": 672
+  "confidence_score": 0.88,
+  "training_rows": 673
 }

@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "BAJFINANCE.NS",
-  "last_retrained": "2026-03-08T17:49:45.757934",
-  "val_rmse": 0.1225554348100967,
-  "val_rmse_per_horizon": [
-    0.11429724509909277,
-    0.1302912466965515
-  ],
+  "last_retrained": "2026-03-16T19:25:19.300769",
+  "val_rmse": 0.12369860442510154,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.12,
-  "training_rows": 672
+  "confidence_score": 0.51,
+  "training_rows": 673
 }

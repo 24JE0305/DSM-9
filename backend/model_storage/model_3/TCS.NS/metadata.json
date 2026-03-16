@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "TCS.NS",
-  "last_retrained": "2026-03-08T17:49:23.068199",
-  "val_rmse": 0.06340437895777709,
-  "val_rmse_per_horizon": [
-    0.06880467133817536,
-    0.05749911081128544
-  ],
+  "last_retrained": "2026-03-16T19:24:59.268889",
+  "val_rmse": 0.0526336835748196,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.29,
-  "training_rows": 672
+  "confidence_score": 0.79,
+  "training_rows": 673
 }

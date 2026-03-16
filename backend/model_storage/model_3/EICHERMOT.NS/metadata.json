@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "EICHERMOT.NS",
-  "last_retrained": "2026-03-08T17:53:37.577037",
-  "val_rmse": 0.08686784660520004,
-  "val_rmse_per_horizon": [
-    0.10580158645417523,
-    0.06243452451511756
-  ],
+  "last_retrained": "2026-03-16T19:29:07.984130",
+  "val_rmse": 0.08856316800888145,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.17,
-  "training_rows": 672
+  "confidence_score": 0.65,
+  "training_rows": 673
 }

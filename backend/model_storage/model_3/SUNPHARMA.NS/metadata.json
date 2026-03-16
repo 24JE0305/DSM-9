@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "SUNPHARMA.NS",
-  "last_retrained": "2026-03-08T17:50:37.965945",
-  "val_rmse": 0.09318493148777453,
-  "val_rmse_per_horizon": [
-    0.07440137899248044,
-    0.10877176893284285
-  ],
+  "last_retrained": "2026-03-16T19:26:11.612711",
+  "val_rmse": 0.07037919838938435,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.23,
-  "training_rows": 672
+  "confidence_score": 0.72,
+  "training_rows": 673
 }

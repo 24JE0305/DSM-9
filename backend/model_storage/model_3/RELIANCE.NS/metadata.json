@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "RELIANCE.NS",
-  "last_retrained": "2026-03-08T17:49:06.377954",
-  "val_rmse": 0.15898902967019202,
-  "val_rmse_per_horizon": [
-    0.20829162677870644,
-    0.08467361646238132
-  ],
+  "last_retrained": "2026-03-16T19:24:37.236924",
+  "val_rmse": 0.18401670369066825,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.1,
-  "training_rows": 672
+  "confidence_score": 0.3,
+  "training_rows": 673
 }

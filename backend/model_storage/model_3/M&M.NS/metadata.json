@@ -1,12 +1,8 @@
 {
-  "version": "3.0",
+  "version": "3.2",
   "ticker": "M&M.NS",
-  "last_retrained": "2026-03-08T17:50:17.210433",
-  "val_rmse": 0.12020155049209041,
-  "val_rmse_per_horizon": [
-    0.16653122796265327,
-    0.03412001750667704
-  ],
+  "last_retrained": "2026-03-16T19:25:48.850039",
+  "val_rmse": 0.15371120332703306,
   "horizons": [
     90,
     365
@@ -40,6 +36,6 @@
   "n_features": 24,
   "window": 60,
   "architecture": "Transformer+BiLSTM-Attention+XGBoost+LearnedFusion",
-  "confidence_score": 0.34,
-  "training_rows": 672
+  "confidence_score": 0.39,
+  "training_rows": 673
 }
