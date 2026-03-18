@@ -7,7 +7,7 @@ import pandas as pd
 import os
 from app.config import TOP50_FILE
 from app.model_3.inference_v3 import predict_v3
-from app.services.backtest_v3 import run_backtest_v3
+from app.services.backtest_v3 import run_backtest_v3_0_1
 
 
 
@@ -87,7 +87,7 @@ def backtest_model_3(ticker: str, horizon: int = 90, step: int = 30):
     Same metrics as /backtest_v2 for easy A/B comparison.
     """
     try:
-        result = run_backtest_v3(ticker, horizon=horizon, step=step)
+        result = run_backtest_v3_0_1(ticker, horizon=horizon, step=step)
         return result
     except FileNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
@@ -95,7 +95,6 @@ def backtest_model_3(ticker: str, horizon: int = 90, step: int = 30):
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 
 # ============================================================
 # ADD THIS TO app/main.py
