@@ -9,15 +9,31 @@ export function Feedback() {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simulate API call for feedback submission
-    console.log("Feedback submitted:", formData);
-    setIsSubmitted(true);
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({ name: '', email: '', feedback: '' });
-    }, 3000);
+    try {
+      await fetch("https://formsubmit.co/ajax/s8world7@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.feedback,
+          _subject: "New DSM-9 Platform Feedback!"
+        })
+      });
+      setIsSubmitted(true);
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setFormData({ name: '', email: '', feedback: '' });
+      }, 5000);
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      alert("There was an error sending your feedback. Please try again.");
+    }
   };
 
   const handleChange = (e) => {
