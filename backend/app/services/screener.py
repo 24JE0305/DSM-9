@@ -6,6 +6,7 @@
 # ============================================================
 
 import json
+import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Optional
@@ -14,9 +15,20 @@ from app.config import TOP50_FILE
 from app.model_3.inference_v3 import predict_v3
 
 
+_PREDICT_CACHE = {}
+CACHE_TTL = 3600  # 1 hour
+
 def _safe_predict(ticker: str) -> Optional[dict]:
+    now = time.time()
+    if ticker in _PREDICT_CACHE:
+        cached_result, timestamp = _PREDICT_CACHE[ticker]
+        if now - timestamp < CACHE_TTL:
+            return cached_result
+            
     try:
-        return predict_v3(ticker)
+        res = predict_v3(ticker)
+        _PREDICT_CACHE[ticker] = (res, now)
+        return res
     except Exception as e:
         return {"symbol": ticker, "_error": str(e)}
 
