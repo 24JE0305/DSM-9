@@ -1,0 +1,40 @@
+# ── Model storage (now in MongoDB) ───────────────────────────
+backend/model_storage/
+
+# ── Cached market data (fetched at runtime via yfinance) ──────
+backend/data_cache/
+
+# ── Dev-only scripts (not needed on server) ───────────────────
+backend/upload_models_to_mongo.py
+backend/run_accuracy_test.py
+backend/accuracy_report.json
+
+# ── Environment secrets ───────────────────────────────────────
+backend/.env
+.env
+
+# ── Python ────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.venv/
+venv/
+env/
+
+# ── Node / Frontend ───────────────────────────────────────────
+node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+
+# ── Editor / OS ───────────────────────────────────────────────
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
