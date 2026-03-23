@@ -9,3 +9,8 @@ plotly
 python-dotenv
 streamlit
 requests
+pymongo[srv]
+safetensors
+fastapi
+uvicorn
+xgboost

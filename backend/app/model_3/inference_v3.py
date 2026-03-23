@@ -6,20 +6,13 @@
 # endpoints (backtest, report) work identically with v3.
 # ============================================================
 
-import os
-import json
 import numpy as np
 import torch
-import xgboost as xgb
 from datetime import datetime
-from pathlib import Path
-from safetensors.torch import load_file
-from sklearn.preprocessing import StandardScaler
 
 from src.model_3.features_v3 import compute_features_v3, FEATURES_V3
-from src.model_3.model_v3_0 import DSM9_v3, DEVICE, WINDOW, HORIZONS
-
-MODEL_BASE = Path("model_storage/model_3")
+from src.model_3.model_v3_0 import WINDOW, HORIZONS
+from app.model_3.mongo_loader import load_v3_models_from_mongo
 
 
 # ── Helpers (identical contract to v2) ───────────────────────
@@ -38,37 +31,9 @@ def signal_bias(ret: float) -> str:
     return "Neutral"
 
 
-# ── Model loader ─────────────────────────────────────────────
-
-def _load_v3_models(ticker: str):
-    model_dir = MODEL_BASE / ticker
-
-    if not model_dir.is_dir():
-        raise FileNotFoundError(f"No Model 3.0 found for {ticker}. Train first.")
-
-    with open(model_dir / "metadata.json") as f:
-        metadata = json.load(f)
-
-    # Scaler
-    scaler = StandardScaler()
-    scaler.mean_          = np.load(model_dir / "scaler_mean.npy")
-    scaler.scale_         = np.load(model_dir / "scaler_scale.npy")
-    scaler.n_features_in_ = len(FEATURES_V3)
-
-    # XGBoost
-    xgb_models = []
-    for h in HORIZONS:
-        m = xgb.XGBRegressor()
-        m.load_model(str(model_dir / f"xgb_{h}.json"))
-        xgb_models.append(m)
-
-    # DSM9_v3 deep model
-    deep_model = DSM9_v3(n_feat=len(FEATURES_V3)).to(DEVICE)
-    state_dict = load_file(str(model_dir / "model_v3.safetensors"))
-    deep_model.load_state_dict(state_dict)
-    deep_model.eval()
-
-    return scaler, xgb_models, deep_model, metadata
+# ── Model loader (MongoDB-backed) ────────────────────────────
+# load_v3_models_from_mongo() returns the same tuple as the old
+# _load_v3_models() — (scaler, xgb_models, deep_model, metadata)
 
 
 # ── Main inference function ───────────────────────────────────
@@ -94,8 +59,8 @@ def predict_v3(ticker: str) -> dict:
 
     X = df[FEATURES_V3].values
 
-    # ── Load models ─────────────────────────────────────────
-    scaler, xgb_models, deep_model, metadata = _load_v3_models(ticker)
+    # ── Load models from MongoDB ─────────────────────────────
+    scaler, xgb_models, deep_model, metadata = load_v3_models_from_mongo(ticker)
 
     # ── Scale ───────────────────────────────────────────────
     X_scaled = scaler.transform(X)
