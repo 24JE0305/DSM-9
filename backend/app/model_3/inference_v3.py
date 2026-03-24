@@ -11,7 +11,7 @@ import torch
 from datetime import datetime
 
 from src.model_3.features_v3 import compute_features_v3, FEATURES_V3
-from src.model_3.model_v3_0 import WINDOW, HORIZONS
+from src.model_3.model_v3_0 import WINDOW, HORIZONS, DEVICE
 from app.model_3.mongo_loader import load_v3_models_from_mongo
 
 

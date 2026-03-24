@@ -1,16 +1,13 @@
 yfinance
 pandas
 numpy
-seaborn
 torch
 scikit-learn
-matplotlib
 plotly
 python-dotenv
-streamlit
 requests
 pymongo[srv]
 safetensors
 fastapi
 uvicorn
-xgboost
+xgboost

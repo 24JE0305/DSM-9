@@ -82,13 +82,18 @@ def load_v3_models_from_mongo(ticker: str):
     )
     scaler.n_features_in_ = len(FEATURES_V3)
 
-    # ── XGBoost models (JSON bytes from GridFS) ───────────────
+    # ── XGBoost models (JSON documents from models collection) ──
+    # Note: upload_models_to_mongo.py stores xgb_*.json in the `models`
+    # collection (not GridFS), so we read them from there.
     xgb_models = []
     for h in HORIZONS:
-        xgb_bytes = _read_gridfs_bytes(fs, f"{ticker}/xgb_{h}.json")
+        xgb_doc = db["models"].find_one({"ticker": ticker, "file": f"xgb_{h}.json"})
+        if xgb_doc is None:
+            raise FileNotFoundError(
+                f"XGBoost model xgb_{h}.json not found in MongoDB for {ticker}."
+            )
+        xgb_bytes = json.dumps(xgb_doc["content"]).encode("utf-8")
         m = xgb.XGBRegressor()
-        # XGBoost can load from a temporary file or a Booster object;
-        # write to an in-memory temp path via BytesIO trick with load_model
         m.load_model(bytearray(xgb_bytes))
         xgb_models.append(m)
 
