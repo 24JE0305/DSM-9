@@ -1,4 +1,3 @@
-backend/
 # ── Model storage (now in MongoDB) ───────────────────────────
 backend/model_storage/
 
