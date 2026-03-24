@@ -1,11 +1,37 @@
-yfinance
-pandas
-numpy
-seaborn
-torch
-scikit-learn
-matplotlib
-plotly
-python-dotenv
-streamlit
-requests
+# ==========================================
+# Core API & Server (FastAPI Ecosystem)
+# ==========================================
+fastapi>=0.100.0        # Web framework for the API
+uvicorn[standard]>=0.23.0 # ASGI server for running FastAPI
+pydantic>=2.0.0         # Data validation and schemas (implicit with FastAPI, good to pin)
+python-dotenv           # For loading environment variables from .env
+
+# ==========================================
+# Machine Learning & Deep Learning
+# ==========================================
+torch                   # PyTorch for LSTM models
+xgboost                 # XGBoost for hybrid model predictions
+scikit-learn            # For data scaling, metrics, and preprocessing
+safetensors             # Secure and fast model weight loading
+
+# ==========================================
+# Data Processing & Financial Data
+# ==========================================
+pandas                  # DataFrame manipulation
+numpy                   # Numerical computing
+yfinance                # Fetching Nifty50/Nifty500 market data
+
+# ==========================================
+# Database & Network Utilities
+# ==========================================
+pymongo[srv]            # MongoDB connection for data storage/loading
+requests                # Making external HTTP requests
+
+# ==========================================
+# Visualization & Dashboards 
+# (Included from your original list)
+# ==========================================
+streamlit               # Interactive Python dashboards
+matplotlib              # Static charting
+seaborn                 # Statistical data visualization
+plotly                  # Interactive charting
