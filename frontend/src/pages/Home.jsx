@@ -11,7 +11,7 @@ import { ForecastGrid } from '../components/ForecastGrid'
 import { AnalystGauge } from '../components/AnalystGauge'
 import { Loader2, Search, Activity } from 'lucide-react'
 
-const API_URL = "http://localhost:8000";
+const API_URL = "https://s8world7-backend-back.hf.space";
 
 function Home() {
   const [selectedTicker, setSelectedTicker] = useState("RELIANCE.NS");

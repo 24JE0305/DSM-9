@@ -6,7 +6,7 @@ import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 
-const API_URL = "http://localhost:8000";
+const API_URL = "https://s8world7-backend-back.hf.space";
 
 function Backtest() {
   const [isRunning, setIsRunning] = useState(false);

@@ -5,7 +5,7 @@ import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 
 
-const API_URL = "http://localhost:8000";
+const API_URL = "https://s8world7-backend-back.hf.space";
 
 function Screener() {
   const [activePreset, setActivePreset] = useState('momentum');
