@@ -36,7 +36,7 @@ def get_top50():
 
 @app.get("/history/{ticker}")
 def get_history(ticker: str):
-    file_path = f"data_cache/{ticker}.csv"
+    file_path = os.path.join("data_cache", f"{ticker}.csv")
     if not os.path.exists(file_path):
         raise HTTPException(status_code=404, detail="History not found")
     
