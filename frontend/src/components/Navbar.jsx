@@ -1,45 +1,89 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export function Navbar() {
   const [activeTab, setActiveTab] = useState('Home');
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.pathname === '/screener') {
+      setActiveTab('Screener');
+    } else if (location.pathname === '/backtest') {
+      setActiveTab('Backtest');
+    } else if (location.pathname === '/') {
+      setActiveTab(prev => {
+        if (prev === 'Screener' || prev === 'Backtest') {
+          return 'Home';
+        }
+        return prev;
+      });
+    }
+  }, [location.pathname]);
+
+  const isHome = location.pathname === '/';
 
   const scrollToTop = (e) => {
     e.preventDefault();
     setActiveTab('Home');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!isHome) {
+      navigate('/');
+      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const scrollToAbout = (e) => {
     e.preventDefault();
     setActiveTab('About');
-    const el = document.getElementById('about-section');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    if (!isHome) {
+      navigate('/');
+      setTimeout(() => document.getElementById('about-section')?.scrollIntoView({ behavior: 'smooth' }), 100);
+    } else {
+      const el = document.getElementById('about-section');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const scrollToFeedback = (e) => {
     e.preventDefault();
     setActiveTab('Feedback');
-    const el = document.getElementById('feedback-section');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    if (!isHome) {
+      navigate('/');
+      setTimeout(() => document.getElementById('feedback-section')?.scrollIntoView({ behavior: 'smooth' }), 100);
+    } else {
+      const el = document.getElementById('feedback-section');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const scrollToDashboard = (e) => {
     e.preventDefault();
-    const el = document.getElementById('dashboard');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    if (!isHome) {
+      navigate('/');
+      setTimeout(() => document.getElementById('dashboard')?.scrollIntoView({ behavior: 'smooth' }), 100);
+    } else {
+      const el = document.getElementById('dashboard');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const navLinks = [
     { name: 'Home', action: scrollToTop },
     { name: 'About', action: scrollToAbout },
     { name: 'Feedback', action: scrollToFeedback },
+    { name: 'Screener', path: '/screener' },
+    { name: 'Backtest', path: '/backtest' },
   ];
 
   const handleNavClick = (e, link) => {
     if (link.action) {
       link.action(e);
-    } else {
-      setActiveTab(link.name);
+    } else if (link.path) {
+      e.preventDefault();
+      navigate(link.path);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
